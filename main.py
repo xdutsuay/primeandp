@@ -1,9 +1,10 @@
-import subprocess
-import time
 import pickle
+import subprocess
+from estimator import estimate_primes
 
 # File path for storing results
 results_file = 'results.pkl'
+
 
 def load_results():
     try:
@@ -12,47 +13,54 @@ def load_results():
     except FileNotFoundError:
         return {}
 
+
 def save_results(results):
     with open(results_file, 'wb') as file:
         pickle.dump(results, file)
 
+
 def main():
     results = load_results()
 
-    start_range = int(input("Enter the starting number: "))
-    end_range = int(input("Enter the ending number: "))
-    num_threads = int(input("Enter the number of parallel tasks: "))
+    while True:
+        print("\nOptions:")
+        print("1. Estimate Prime Numbers")
+        print("2. Quit")
 
-    key = (start_range, end_range, num_threads)
+        choice = input("Enter your choice: ")
 
-    if key in results:
-        estimated_time = results[key]
-        print(f"Estimated time based on similar input: {estimated_time:.2f} seconds")
-    else:
-        # Measure the time taken for the parallel version
-        start_time_parallel = time.time()
-        subprocess.run(['python', 'parallel_prime_finder.py'], input=f"{start_range}\n{end_range}\n{num_threads}\n", text=True, check=True)
-        end_time_parallel = time.time()
+        if choice == '1':
+            start_range = int(input("Enter the starting number: "))
+            end_range = int(input("Enter the ending number: "))
+            num_threads = int(input("Enter the number of parallel tasks: "))
 
-        # Measure the time taken for the non-parallel version
-        start_time_non_parallel = time.time()
-        subprocess.run(['python', 'prime_finder.py'], input=f"{start_range}\n{end_range}\n", text=True, check=True)
-        end_time_non_parallel = time.time()
+            key = (start_range, end_range, num_threads)
 
-        # Calculate time differences
-        time_difference_parallel = end_time_parallel - start_time_parallel
-        time_difference_non_parallel = end_time_non_parallel - start_time_non_parallel
+            if key in results:
+                estimated_time = results[key]
+                print(f"Estimated time based on similar input: {estimated_time:.2f} seconds")
 
-        # Store the result for future use
-        results[key] = max(time_difference_parallel, time_difference_non_parallel)
+            parallel_time, non_parallel_time = estimate_primes(start_range, end_range, num_threads)
 
-        # Save updated results to the file
-        save_results(results)
+            # Store the result for future use
+            results[key] = max(parallel_time, non_parallel_time)
 
-        print(f"Total time taken: {results[key]:.2f} seconds")
-        print(f"Time taken by parallel version: {time_difference_parallel:.2f} seconds")
-        print(f"Time taken by non-parallel version: {time_difference_non_parallel:.2f} seconds")
-        print(f"Time difference: {abs(time_difference_parallel - time_difference_non_parallel):.2f} seconds")
+            # Save updated results to the file
+            save_results(results)
+
+            print(f"Total time taken: {results[key]:.2f} seconds")
+            print(f"Time taken by parallel version: {parallel_time:.2f} seconds")
+            print(f"Time taken by non-parallel version: {non_parallel_time:.2f} seconds")
+            print(f"Time difference: {abs(parallel_time - non_parallel_time):.2f} seconds")
+
+            # Add this code to print prime numbers regardless of results
+            print(f"Prime numbers between {start_range} and {end_range}:")
+            subprocess.run(['python', 'prime_finder.py'], input=f"{start_range}\n{end_range}\n", text=True, check=True)
+
+        elif choice == '2':
+            print("Exiting the program.")
+            break
+
 
 if __name__ == "__main__":
     main()
