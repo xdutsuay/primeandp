@@ -1,6 +1,8 @@
+import argparse
 import pickle
 import subprocess
 from estimator import estimate_primes
+from tabulate import tabulate
 
 # File path for storing results
 results_file = 'results.pkl'
@@ -19,8 +21,15 @@ def save_results(results):
         pickle.dump(results, file)
 
 
-def main():
+def main(args=None):
     results = load_results()
+
+    if args is None:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--start', type=int, help='Starting number')
+        parser.add_argument('--end', type=int, help='Ending number')
+        parser.add_argument('--threads', type=int, help='Number of parallel tasks')
+        args = parser.parse_args()
 
     while True:
         print("\nOptions:")
@@ -48,13 +57,17 @@ def main():
             # Save updated results to the file
             save_results(results)
 
-            print(f"Total time taken: {results[key]:.2f} seconds")
-            print(f"Time taken by parallel version: {parallel_time:.2f} seconds")
-            print(f"Time taken by non-parallel version: {non_parallel_time:.2f} seconds")
-            print(f"Time difference: {abs(parallel_time - non_parallel_time):.2f} seconds")
+            print(f"\nResults for {start_range} to {end_range} with {num_threads} threads:")
+
+            table = [("Metric", "Parallel", "Non-Parallel"),
+                     ("Total time taken (seconds)", f"{parallel_time:.2f}", f"{non_parallel_time:.2f}"),
+                     ("Time difference (seconds)", f"{abs(parallel_time - non_parallel_time):.2f}", ""),
+                     ]
+
+            print(tabulate(table, headers="firstrow", tablefmt="fancy_grid"))
 
             # Add this code to print prime numbers regardless of results
-            print(f"Prime numbers between {start_range} and {end_range}:")
+            print(f"\nPrime numbers between {start_range} and {end_range}:")
             subprocess.run(['python', 'prime_finder.py'], input=f"{start_range}\n{end_range}\n", text=True, check=True)
 
         elif choice == '2':
