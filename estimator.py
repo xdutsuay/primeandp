@@ -21,13 +21,13 @@ def estimate_primes(start_range, end_range, num_threads):
     return time_difference_parallel, time_difference_non_parallel
 
 
-if __name__ == "__main__":
-    start_range = int(input("Enter the starting number: "))
-    end_range = int(input("Enter the ending number: "))
-    num_threads = int(input("Enter the number of parallel tasks: "))
-
-    parallel_time, non_parallel_time = estimate_primes(start_range, end_range, num_threads)
-
-    print(f"Total time taken by parallel version: {parallel_time:.2f} seconds")
-    print(f"Total time taken by non-parallel version: {non_parallel_time:.2f} seconds")
-    print(f"Time difference: {abs(parallel_time - non_parallel_time):.2f} seconds")
+# if __name__ == "__main__":
+#     start_range = int(input("Enter the starting number: "))
+#     end_range = int(input("Enter the ending number: "))
+#     num_threads = int(input("Enter the number of parallel tasks: "))
+#
+#     parallel_time, non_parallel_time = estimate_primes(start_range, end_range, num_threads)
+#
+#     print(f"Total time taken by parallel version: {parallel_time:.2f} seconds")
+#     print(f"Total time taken by non-parallel version: {non_parallel_time:.2f} seconds")
+#     print(f"Time difference: {abs(parallel_time - non_parallel_time):.2f} seconds")
