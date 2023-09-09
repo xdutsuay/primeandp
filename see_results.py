@@ -29,7 +29,8 @@ def main():
                 start,
                 end,
                 threads,
-                f"{max(parallel_time, non_parallel_time):.2f} seconds"
+                parallel_time,
+                non_parallel_time
             ])
         elif isinstance(value, float):
             start, end, threads = key
@@ -43,7 +44,7 @@ def main():
             print(f"Invalid data for key: {key}")
 
     # Display the data in a tabulated format
-    headers = ["Start Range", "End Range", "Threads", "Time"]
+    headers = ["Start Range", "End Range", "Threads", "Parallel_time", "non_parallel_time"]
     print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
 
 

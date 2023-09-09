@@ -1,6 +1,9 @@
 import math
 import multiprocessing
 import time
+import os
+
+current_file = os.path.basename(__file__)
 
 
 def is_prime(num):
@@ -42,14 +45,14 @@ def parallel_prime_search(start, end, num_threads):
     return [prime for sublist in results for prime in sublist], end_time - start_time
 
 
-# if __name__ == "__main__":
-#     start_range = int(input("Enter the starting number: "))
-#     end_range = int(input("Enter the ending number: "))
-#     num_threads = int(input("Enter the number of parallel tasks: "))
-#
-#     primes, total_time = parallel_prime_search(start_range, end_range, num_threads)
-#
-#     print(f"Prime numbers between {start_range} and {end_range}:")
-#     #print(primes)
-#     print(f"Total time taken: {total_time:.2f} seconds")
+if __name__ == "__main__":
+    start_range = int(input("Enter the starting number: "))
+    end_range = int(input("Enter the ending number: "))
+    num_threads = int(input("Enter the number of parallel tasks: "))
+
+    primes, total_time = parallel_prime_search(start_range, end_range, num_threads)
+
+    print(f"Prime numbers between {start_range} and {end_range}:")
+    print(current_file, primes)
+    print(f"Total time taken: {total_time:.2f} seconds")
 

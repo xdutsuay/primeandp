@@ -22,6 +22,7 @@ def save_results(results):
 
 
 def main(args=None):
+    #import pdb; pdb.set_trace()
     results = load_results()
 
     if args is None:
@@ -52,10 +53,12 @@ def main(args=None):
             parallel_time, non_parallel_time = estimate_primes(start_range, end_range, num_threads)
 
             # Store the result for future use
-            results[key] = max(parallel_time, non_parallel_time)
+            #results[key] = max(parallel_time, non_parallel_time)
+            results[key] = (parallel_time, non_parallel_time)
 
             # Save updated results to the file
             save_results(results)
+
 
             print(f"\nResults for {start_range} to {end_range} with {num_threads} threads:")
 
@@ -67,8 +70,8 @@ def main(args=None):
             print(tabulate(table, headers="firstrow", tablefmt="fancy_grid"))
 
             # Add this code to print prime numbers regardless of results
-            print(f"\nPrime numbers between {start_range} and {end_range}:")
-            subprocess.run(['python', 'prime_finder.py'], input=f"{start_range}\n{end_range}\n", text=True, check=True)
+            #print(f"\nPrime numbers between {start_range} and {end_range}:")
+            #subprocess.run(['python', 'prime_finder.py'], input=f"{start_range}\n{end_range}\n", text=True, check=True)
 
         elif choice == '2':
             print("Exiting the program.")
@@ -77,3 +80,4 @@ def main(args=None):
 
 if __name__ == "__main__":
     main()
+

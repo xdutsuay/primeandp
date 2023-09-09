@@ -1,5 +1,8 @@
 import math
 import time
+import os
+
+current_file = os.path.basename(__file__)
 
 
 def is_prime(num):
@@ -24,16 +27,16 @@ def find_primes(start, end):
     return primes
 
 
-# if __name__ == "__main__":
-#     start_range = int(input("Enter the starting number: "))
-#     end_range = int(input("Enter the ending number: "))
-#
-#     start_time = time.time()  # Record the start time
-#
-#     primes = find_primes(start_range, end_range)
-#
-#     end_time = time.time()  # Record the end time
-#
-#     print(f"Prime numbers between {start_range} and {end_range}:")
-#     #print(primes)
-#     print(f"Total time taken: {end_time - start_time:.2f} seconds")
+if __name__ == "__main__":
+    start_range = int(input("Enter the starting number: "))
+    end_range = int(input("Enter the ending number: "))
+
+    start_time = time.time()  # Record the start time
+
+    primes = find_primes(start_range, end_range)
+
+    end_time = time.time()  # Record the end time
+
+    print(f"Prime numbers between {start_range} and {end_range}:")
+    print(current_file, primes)
+    print(f"Total time taken: {end_time - start_time:.2f} seconds")
